@@ -1,0 +1,8 @@
+&uart0 {
+
+	water{
+		status = "okay";
+		compatible = "water";
+	};
+};
+
