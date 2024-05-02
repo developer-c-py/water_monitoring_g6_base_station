@@ -1,15 +1,17 @@
 /{
 aliases{
-	wateralias = &water;
+	wateralias = &watersensor;
 };
 };
 
-water: water {
-		compatible = "water";
-		status = "okay";
-};
+
 &uart0 {
 	compatible = "water";
 	status = "okay";
 	current-speed = <115200>;
+	watersensor: water {
+		compatible = "water";
+		status = "okay";
+};
+
 };
