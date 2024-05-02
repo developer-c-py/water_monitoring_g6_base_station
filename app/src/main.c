@@ -15,7 +15,7 @@ int main() {
   
 	printk("Zephyr Example Application %s\n", APP_VERSION_STRING);
 
-	sensor = DEVICE_DT_GET(DT_NODELABEL(water));
+	sensor = dev = device_get_binding(water);
 	if (!device_is_ready(sensor)) {
 		LOG_ERR("Sensor not ready");
 		return 0;
