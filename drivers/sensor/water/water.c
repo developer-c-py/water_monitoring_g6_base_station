@@ -2,6 +2,11 @@
  * Copyright (c) 2021 Nordic Semiconductor ASA
  * SPDX-License-Identifier: Apache-2.0
  */
+/**
+ * \\defgroup drivers_water Water Drivers
+ *
+ * Detailed description...
+ */
 
 #define DT_DRV_COMPAT zephyr_water
 
@@ -62,7 +67,7 @@ static const struct uart_config uart_config = {
 };
 
 /**
- * @defgroup drivers_water water drivers
+ * @defgroup drivers_water Water drivers
  * @ingroup drivers
  * @{
  *
@@ -91,7 +96,7 @@ int update_value(const struct device *dev,
 }
 
 /**
- * @defgroup drivers_water_ops water driver operations
+ * @defgroup drivers_water_ops Water driver operations
  * @{
  *
  * @brief Operations of the blink driver class.
