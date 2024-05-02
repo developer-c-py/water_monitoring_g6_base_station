@@ -1,15 +1,13 @@
 /{
 aliases{
-	wateralias : &water;
+	wateralias = &water;
 };
+};
+
 water: water {
 		compatible = "water";
 		status = "okay";
-	};
-
 };
-
-
 &uart0 {
 	compatible = "water";
 	status = "okay";
