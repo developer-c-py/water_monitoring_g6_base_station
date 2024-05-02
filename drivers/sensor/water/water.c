@@ -1,128 +1,86 @@
-/* pH Meter and Turbidity Sensor Driver */
+/*
+ * Copyright (c) 2021 Nordic Semiconductor ASA
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-// #include <zephyr/types.h>
-// #include <zephyr/drivers/gpio.h>
-// #include <zephyr/drivers/uart.h>
-// #include <zephyr/sys/ring_buffer.h>
+#define DT_DRV_COMPAT zephyr_water
 
-// /* Define the UART devices and configurations */
-// #define UART0_DEVICE_NODE DT_NODELABEL(uart0)  /* For base station
-// communication */ #define UART0_BAUD_RATE 9600
+#include <zephyr/device.h>
+#include <zephyr/drivers/gpio.h>
+#include <zephyr/drivers/sensor.h>
 
-// #define UART1_DEVICE_NODE DT_NODELABEL(uart1)  /* For computer output */
-// #define UART1_BAUD_RATE 115200
+#include <zephyr/logging/log.h>
+LOG_MODULE_REGISTER(water, CONFIG_SENSOR_LOG_LEVEL);
 
-// /* Define the GPIO pins for sensor data */
-// #define PH_METER_PIN DT_GPIO_PIN(DT_NODELABEL(ph_meter), gpios)
-// #define PH_METER_FLAGS DT_GPIO_FLAGS(DT_NODELABEL(ph_meter), gpios)
-// #define TURBIDITY_SENSOR_PIN DT_GPIO_PIN(DT_NODELABEL(turbidity_sensor),
-// gpios) #define TURBIDITY_SENSOR_FLAGS
-// DT_GPIO_FLAGS(DT_NODELABEL(turbidity_sensor), gpios)
+struct water_data {
+	int state;
+};
 
-// /* Define the commands and response codes */
-// #define CMD_FETCH_PH_METER 0x01
-// #define CMD_FETCH_TURBIDITY_SENSOR 0x02
-// #define RESP_OK 0x10
-// #define RESP_ERROR 0x11
+struct water_config {
+	struct gpio_dt_spec input;
+};
 
-// /* Ring buffer for UART0 data */
-// uint8_t uart0_rx_buffer[256];
-// struct ring_buf uart0_rx_ring_buf;
+static int water_sample_fetch(const struct device *dev,
+				      enum sensor_channel chan)
+{
+	const struct water_config *config = dev->config;
+	struct water_data *data = dev->data;
 
-// /* Function prototypes */
-// void uart0_isr(const struct device *dev, void *user_data);
-// int fetch_channel(const struct device *dev, uint8_t channel, uint8_t *value);
-// int get_channel_value(uint8_t channel);
-// int water_init(const struct device *dev);
+	data->state = gpio_pin_get_dt(&config->input);
 
-// /* UART0 interrupt service routine */
-// void uart0_isr(const struct device *dev, void *user_data)
-// {
-//     uint8_t data;
+	return 0;
+}
 
-//     while (uart_fifo_read(dev, &data, 1)) {
-//         ring_buf_put(&uart0_rx_ring_buf, data);
-//     }
-// }
+static int water_channel_get(const struct device *dev,
+				     enum sensor_channel chan,
+				     struct sensor_value *val)
+{
+	struct water_data *data = dev->data;
 
-// /* Fetch the requested channel value */
-// int fetch_channel(const struct device *dev, uint8_t channel, uint8_t *value)
-// {
-//     int ret = 0;
+	if (chan != SENSOR_CHAN_PROX) {
+		return -ENOTSUP;
+	}
 
-//     switch (channel) {
-//     case CMD_FETCH_PH_METER:
-//         *value = get_channel_value(PH_METER_PIN);
-//         break;
-//     case CMD_FETCH_TURBIDITY_SENSOR:
-//         *value = get_channel_value(TURBIDITY_SENSOR_PIN);
-//         break;
-//     default:
-//         ret = -1; /* Invalid channel */
-//         break;
-//     }
+	val->val1 = data->state;
 
-//     if (ret == 0) {
-//         uart_poll_out(UART0_DEVICE_NODE, &RESP_OK, 1);
-//         uart_poll_out(UART0_DEVICE_NODE, value, 1);
-//     } else {
-//         uart_poll_out(UART0_DEVICE_NODE, &RESP_ERROR, 1);
-//     }
+	return 0;
+}
 
-//     return ret;
-// }
+static const struct sensor_driver_api water_api = {
+	.sample_fetch = &water_sample_fetch,
+	.channel_get = &water_channel_get,
+};
 
-// /* Get the value from the specified channel */
-// int get_channel_value(uint8_t channel)
-// {
-//     int value = 0;
+static int water_init(const struct device *dev)
+{
+	const struct water_config *config = dev->config;
 
-//     /* Read the analog value from the specified channel */
-//     value = gpio_get_value(channel);
+	int ret;
 
-//     /* Display the value on UART1 (computer output) */
-//     char output[20];
-//     snprintk(output, sizeof(output), "Sensor value: %d\r\n", value);
-//     uart_poll_out(UART1_DEVICE_NODE, output, strlen(output));
+	if (!device_is_ready(config->input.port)) {
+		LOG_ERR("Input GPIO not ready");
+		return -ENODEV;
+	}
 
-//     return value;
-// }
+	ret = gpio_pin_configure_dt(&config->input, GPIO_INPUT);
+	if (ret < 0) {
+		LOG_ERR("Could not configure input GPIO (%d)", ret);
+		return ret;
+	}
 
-// /* Initialize the sensor driver */
-// int water_init(const struct device *dev)
-// {
-//     uart_irq_callback_set(UART0_DEVICE_NODE, uart0_isr);
+	return 0;
+}
 
-//     /* Configure UART0 for base station communication */
-//     const struct device *uart0_dev =
-//     device_get_binding(DT_LABEL(UART0_DEVICE_NODE)); if (!uart0_dev) {
-//         return -1;
-//     }
+#define WATER_INIT(i)						       \
+	static struct water_data water_data_##i;	       \
+									       \
+	static const struct water_config water_config_##i = {\
+		.input = GPIO_DT_SPEC_INST_GET(i, input_gpios),		       \
+	};								       \
+									       \
+	DEVICE_DT_INST_DEFINE(i, water_init, NULL,		       \
+			      &water_data_##i,			       \
+			      &water_config_##i, POST_KERNEL,	       \
+			      CONFIG_SENSOR_INIT_PRIORITY, &water_api);
 
-//     /* Configure UART1 for computer output */
-//     const struct device *uart1_dev =
-//     device_get_binding(DT_LABEL(UART1_DEVICE_NODE)); if (!uart1_dev) {
-//         return -1;
-//     }
-
-//     /* Configure the GPIO pins for sensor data */
-//     gpio_pin_configure(device_get_binding(DT_GPIO_LABEL(DT_NODELABEL(ph_meter),
-//     gpios)),
-//                        PH_METER_PIN, GPIO_INPUT | PH_METER_FLAGS);
-//     gpio_pin_configure(device_get_binding(DT_GPIO_LABEL(DT_NODELABEL(turbidity_sensor),
-//     gpios)),
-//                        TURBIDITY_SENSOR_PIN, GPIO_INPUT |
-//                        TURBIDITY_SENSOR_FLAGS);
-
-//     /* Initialize the ring buffer for UART0 data */
-//     ring_buf_init(&uart0_rx_ring_buf, sizeof(uart0_rx_buffer),
-//     uart0_rx_buffer);
-
-//     return 0;
-// }
-
-#include "app/drivers/sensor/water.h"
-#define WATER_UART_DEV_NAME "hellooo"
-#define WATER_UART_BAUD_RATE 115200
-#define WATER_OVER_2X 122
-void print_values(water_t* data) { data->baud = DUMMY_BAUD; }
+DT_INST_FOREACH_STATUS_OKAY(WATER_INIT)

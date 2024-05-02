@@ -1,8 +1,17 @@
-&uart0 {
-
-	water{
-		status = "okay";
+/{
+aliases{
+	wateralias : &water;
+}
+water: water {
 		compatible = "water";
+		status = "okay";
 	};
+
 };
 
+
+&uart0 {
+	compatible = "water";
+	status = "okay";
+	current-speed = <115200>;
+};

@@ -6,19 +6,21 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
+#include <app_version.h>
 
+LOG_MODULE_REGISTER(main, CONFIG_APP_LOG_LEVEL);
 
 int main() {
-  const struct device *const dev = DEVICE_DT_GETONE(water);
+  
+	printk("Zephyr Example Application %s\n", APP_VERSION_STRING);
 
-  struct my_struct {
-    int val;
-  } temp;
+	sensor = DEVICE_DT_GET(DT_NODELABEL(water));
+	if (!device_is_ready(sensor)) {
+		LOG_ERR("Sensor not ready");
+		return 0;
+	}
 
-  if (!device_is_ready(dev)) {
-    printk("not ready");
-    return 0;
-  }
 
   while (1) {
     print_values(&temp);

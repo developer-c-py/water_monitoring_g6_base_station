@@ -16,8 +16,4 @@ if defined
 #define DUMMY_BAUD 9600
 #endif
 
-typedef struct {
-  int baud;
-} water_t;
-
 #endif /* ZEPHYR_INCLUDE */
