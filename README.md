@@ -11,6 +11,7 @@ west update
 ```
 # build app
 ```
+cd water_monitoring_g6_base_station
 west build -b rpi_pico -s app -p
 ```
 
