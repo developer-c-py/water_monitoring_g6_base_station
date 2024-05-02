@@ -3,7 +3,13 @@
 
 name: Documentation Build
 
-on: [push, pull_request]
+on:
+  schedule:
+  - cron: '0 */3 * * *'
+  push:
+    tags:
+    - v*
+  pull_request:
 
 env:
   # NOTE: west docstrings will be extracted from the version listed here
