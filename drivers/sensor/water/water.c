@@ -84,3 +84,8 @@ static int water_init(const struct device *dev)
 			      CONFIG_SENSOR_INIT_PRIORITY, &water_api);
 
 DT_INST_FOREACH_STATUS_OKAY(WATER_INIT)
+
+
+
+
+

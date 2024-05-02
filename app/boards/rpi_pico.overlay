@@ -4,11 +4,10 @@ aliases{
 };
 };
 
-
 &uart0 {
-	compatible = "water";
 	status = "okay";
-	current-speed = <115200>;
+	#address-cells = <1>;
+	#size-cells = <0>;
 	watersensor: water {
 		compatible = "water";
 		status = "okay";

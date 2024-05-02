@@ -14,8 +14,8 @@ LOG_MODULE_REGISTER(main, CONFIG_APP_LOG_LEVEL);
 int main() {
   
 	printk("Zephyr Example Application %s\n", APP_VERSION_STRING);
-
-	sensor = dev = device_get_binding(water);
+const struct device *sensor;
+	sensor = device_get_binding("water");
 	if (!device_is_ready(sensor)) {
 		LOG_ERR("Sensor not ready");
 		return 0;
@@ -23,8 +23,7 @@ int main() {
 
 
   while (1) {
-    print_values(&temp);
-    printk("value = %d", temp.val);
+    
     k_sleep(K_MSEC(1000));
   }
 }
