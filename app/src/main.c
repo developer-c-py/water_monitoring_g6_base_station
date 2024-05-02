@@ -15,7 +15,7 @@ int main() {
     int val;
   } temp;
 
-  if (!device_is_raedy(dev)) {
+  if (!device_is_ready(dev)) {
     printk("not ready");
     return 0;
   }
