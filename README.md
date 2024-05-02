@@ -3,6 +3,12 @@
 ```
 west init -m https://github.com/Amrith-H-N/water_monitoring_g6_base_station --mr main water_monitoring_g6_base_station
 ```
+or to init exising directory (inside the directory with west.yml)
+```
+west init -l 
+west update
+west build -b rpi_pico -s app -p
+```
 
 # update Zephyr modules
 ```

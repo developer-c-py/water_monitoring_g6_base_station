@@ -6,14 +6,17 @@
 #ifndef ZEPHYR_INCLUDE_ZEPHYR_DRIVERS_SENSOR_H_
 #define ZEPHYR_INCLUDE_ZEPHYR_DRIVERS_SENSOR_H_
 
-if defined
-  WATER_UART_DEV_NAME
-#define DUMMY "dummmy name"
-#endif
+#include <zephyr/drivers/sensor.h>
 
-if defined
-  WATER_UART_BAUD_RATE
-#define DUMMY_BAUD 9600
-#endif
+/** @brief water_sensor custom channels. */
+enum water_channel
+{
+  /** Fingerprint verification. */
+  WATER_CHAN_PH = SENSOR_CHAN_PRIV_START,
+  WATER_CHAN_TURB,
+  WATER_CHAN_TEMP,
+  WATER_CHAN_ALL
+
+};
 
 #endif /* ZEPHYR_INCLUDE */

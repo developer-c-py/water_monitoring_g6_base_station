@@ -8,9 +8,14 @@ aliases{
 	status = "okay";
 	#address-cells = <1>;
 	#size-cells = <0>;
-	watersensor: water {
+		watersensor: water {
 		compatible = "water";
 		status = "okay";
 };
-
 };
+
+&uart1 {
+    status = "okay";
+    current-speed = <115200>;
+};
+

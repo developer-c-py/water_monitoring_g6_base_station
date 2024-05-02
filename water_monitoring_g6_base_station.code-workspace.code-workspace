@@ -1,0 +1,93 @@
+ {
+	"folders": [
+		{
+			"path": "isb",
+			"name": "app"
+		},
+		{
+			"path": "zephyrproject/zephyr/boards/arm/scanimetrics_witap_isb",
+			"name": "board"
+		},
+		{
+			"path": "zephyrproject/zephyr",
+			"name": "zephyr"
+		},
+		{
+			"path": "zephyrproject/modules",
+			"name": "modules"
+		}
+	],
+	"settings": {
+		"C_Cpp.default.includePath": [
+			"${workspaceFolder:zephyr}/include",
+			"${workspaceFolder:zephyr}/include/drivers",
+			"${workspaceFolder:zephyr}/soc/arm/atmel_sam0/samd21",
+			"${workspaceFolder:zephyr}/soc/arm/atmel_sam0/common/.",
+			"${workspaceFolder:zephyr}/drivers",
+			"${workspaceFolder:zephyr}/ext/lib/fnmatch/.",
+			"${workspaceFolder:zephyr}/ext/hal/cmsis/Core/Include",
+			"${workspaceFolder:zephyr}/subsys/usb",
+			"${workspaceFolder:modules}/hal/atmel/asf/sam0/include/samd21",
+			"${workspaceFolder:modules}/fs/littlefs",
+			"${workspaceFolder:modules}/fs/fatfs/include",
+			"${workspaceFolder:modules}/fs/nffs/include/nfss",
+			"${workspaceFolder:zephyr}/lib/libc/minimal/include",
+			"/usr/local/Cellar/arm-none-eabi-gcc/8-2018-q4-major/gcc/bin/../lib/gcc/arm-none-eabi/8.2.1/include",
+			"/usr/local/Cellar/arm-none-eabi-gcc/8-2018-q4-major/gcc/bin/../lib/gcc/arm-none-eabi/8.2.1/include-fixed",
+			"${workspaceFolder:app}/build/zephyr/include/generated"
+		],
+		"C_Cpp.default.forcedInclude": [
+			"${workspaceFolder:app}/build/zephyr/include/generated/autoconf.h",
+			"${workspaceFolder:zephyr}/include/toolchain/zephyr_stdint.h",
+			"${workspaceFolder:app}/.vscode/c_cpp_undef.h"
+		],
+		"C_Cpp.default.defines": [
+			"BUILD_VERSION=v2.1.0-rc1-141-g3cc5bda2fa10",
+			"KERNEL",
+			"_FORTIFY_SOURCE=2",
+			"__PROGRAM_START",
+			"__ZEPHYR__=1"
+		],
+		"C_Cpp.default.compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
+		"C_Cpp.default.cStandard": "c11",
+		"C_Cpp.default.cppStandard": "c++17",
+		"C_Cpp.default.intelliSenseMode": "gcc-x64",
+		"C_Cpp.default.compileCommands": "${workspaceFolder:app}/build/compile_commands.json",
+		"files.associations": {
+			"zephyr.h": "c",
+			"kernel.h": "c",
+			"kernel_includes.h": "c",
+			"log.h": "c",
+			"printk.h": "c",
+			"littlefs.h": "c",
+			"i2c.h": "c",
+			"usb_device.h": "c",
+			"soc.h": "c",
+			"samd21g18a.h": "c",
+			"power.h": "c",
+			"watchdog.h": "c",
+			"i2c_ll_stm32.h": "c",
+			"init.h": "c",
+			"device.h": "c",
+			"cpu.h": "c",
+			"generated_dts_board.h": "c",
+			"system_timer.h": "c",
+			"clock_control.h": "c",
+			"sys_clock.h": "c",
+			"dma.h": "c",
+			"hwinfo.h": "c",
+			"gpio.h": "c",
+			"errno.h": "c",
+			"stdio.h": "c",
+			"version.h": "c"
+		},
+		"terminal.integrated.env.osx": {
+			"ZEPHYR_BASE": "${workspaceFolder:zephyr}/",
+			"ZEPHYR_TOOLCHAIN_VARIANT": "gnuarmemb",
+			"GNUARMEMB_TOOLCHAIN_PATH": "/usr/local/",
+			"PATH": "$ZEPHYR_BASE/scripts:${env:PATH}"
+		},
+		"editor.tabSize": 8,
+		"editor.insertSpaces": false
+	}
+}
