@@ -61,6 +61,18 @@ static const struct uart_config uart_config = {
 	.stop_bits = UART_CFG_STOP_BITS_2,
 };
 
+/**
+ * @defgroup drivers_water water drivers
+ * @ingroup drivers
+ * @{
+ *
+ * @brief A custom driver class to blink LEDs
+ *
+ * This driver class is provided as an example of how to create custom driver
+ * classes. It provides an interface to blink an LED at a configurable rate.
+ * Implementations could include simple GPIO-controlled LEDs, addressable LEDs,
+ * etc.
+ */
 int update_value(const struct device *dev,
 				 enum sensor_channel chan)
 {
@@ -78,7 +90,17 @@ int update_value(const struct device *dev,
 	return 0;
 }
 
-// read from sensor and store in struct -- update value
+/**
+ * @defgroup drivers_water_ops water driver operations
+ * @{
+ *
+ * @brief Operations of the blink driver class.
+ *
+ * Each driver class tipically provides a set of operations that need to be
+ * implemented by each driver. These are used to implement the public API. If
+ * support for system calls is needed, the operations structure must be tagged
+ * with `__subsystem` and follow the `${class}_driver_api` naming scheme.
+ */
 static int water_sample_fetch(const struct device *dev,
 							  enum sensor_channel chan)
 {

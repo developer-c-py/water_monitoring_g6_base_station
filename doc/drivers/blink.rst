@@ -1,14 +1,14 @@
 Blink
 =====
 
-.. doxygengroup:: drivers_blink
+.. doxygengroup:: drivers_water
 
 Driver operations
 -----------------
 
-.. doxygengroup:: drivers_blink_ops
+.. doxygengroup:: drivers_water_ops
 
 Public API
 ----------
 
-.. doxygengroup:: drivers_blink_api
+.. doxygengroup:: drivers_water_api

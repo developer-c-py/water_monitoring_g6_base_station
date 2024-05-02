@@ -6,4 +6,4 @@ Drivers
 .. toctree::
     :maxdepth: 1
 
-    blink
+    sensor
