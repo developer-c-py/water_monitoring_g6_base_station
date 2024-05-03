@@ -23,6 +23,17 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/sys/ring_buffer.h>
 #include "app/drivers/sensor/water.h"
+
+/**
+ * @defgroup drivers Drivers
+ * @{
+ *
+ * @brief This is a group of all driver-related code.
+ *
+ * This group contains all the driver classes, functions, and variables.
+ * It's a central place to find everything related to drivers in this project.
+ */
+
 /*
  * Buffer size and Queue size
  */
@@ -188,6 +199,7 @@ static int water_init(const struct device *dev)
 
 	return 0;
 }
+/** @} */
 /** @} */
 #define WATER_INIT(i)                                     \
 	static struct water_data water_data_##i;              \
