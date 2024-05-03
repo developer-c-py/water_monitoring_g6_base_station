@@ -8,7 +8,9 @@ This is a simple Sphinx documentation setup for ``example-application``.
    :caption: Contents
 
    zephyr
-
+   ../drivers/sensor/water
+   ../include/app/drivers/sensor
+   
 Indices and tables
 ==================
 

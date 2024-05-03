@@ -1,11 +1,14 @@
-/*
- * Copyright (c) 2021 Nordic Semiconductor ASA
- * SPDX-License-Identifier: Apache-2.0
- */
-/**
- * \\defgroup drivers_water Water Drivers
+/** @file water.c
+ *  @brief Function prototypes for the sensornode driver
  *
- * Detailed description...
+ *  This contains the prototypes for the sensor node
+ *  driver and eventually any macros, constants,
+ *  or global variables you will need.
+ *
+ *  @author Amrith Harijayanthan Namboodiri
+ *  @author Abdel Mujeeb
+ *  @author Adithya
+ *  @bug No known bugs.
  */
 
 #define DT_DRV_COMPAT zephyr_water
@@ -20,14 +23,22 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/sys/ring_buffer.h>
 #include "app/drivers/sensor/water.h"
-/* packet buffer size, RX queue size */
+/*
+ * Buffer size and Queue size
+ */
 #define PKT_BUF_SIZE 32U
 #define RX_QUEUE_SIZE 2U
 
 LOG_MODULE_REGISTER(water, CONFIG_SENSOR_LOG_LEVEL);
 
+/*
+ * typedef of sensor_value
+ */
 typedef struct sensor_value sensor_value_t;
 
+/*
+ * water_data structure
+ */
 struct water_data
 {
 	/** RX queue buffer. */
@@ -40,14 +51,19 @@ struct water_data
 	uint8_t buf_ctr;
 	/** Expected reception data length. */
 	uint8_t rx_data_len;
-	/** Sensor value buffer. */
+	/** Sensor value pH. */
 	sensor_value_t pH;
+	/** Sensor value turb. */
 	sensor_value_t turb;
+	/** Sensor value temperature. */
 	sensor_value_t temperature;
 	/** RX queue. */
 	struct k_msgq rx_queue;
 };
 
+/*
+ * water_config structure
+ */
 struct water_config
 {
 	uint32_t addr;
@@ -66,17 +82,12 @@ static const struct uart_config uart_config = {
 	.stop_bits = UART_CFG_STOP_BITS_2,
 };
 
-/**
- * @defgroup drivers_water Water drivers
- * @ingroup drivers
- * @{
+/** @brief helper funtion to update values in the struct
  *
- * @brief A custom driver class to blink LEDs
+ *  format : [ 8bit  | 16bit 16bit | 16bit 16bit | 16bit 16bit | 8bit CRC]
  *
- * This driver class is provided as an example of how to create custom driver
- * classes. It provides an interface to blink an LED at a configurable rate.
- * Implementations could include simple GPIO-controlled LEDs, addressable LEDs,
- * etc.
+ *  @param dev device struct
+ *  @return chan channel to update
  */
 int update_value(const struct device *dev,
 				 enum sensor_channel chan)
@@ -95,16 +106,13 @@ int update_value(const struct device *dev,
 	return 0;
 }
 
-/**
- * @defgroup drivers_water_ops Water driver operations
- * @{
+/** @brief water_sample fetch function to update the values from sensor to struct
  *
- * @brief Operations of the blink driver class.
+ *  This function will fetch values from sensor and update it in the struct
  *
- * Each driver class tipically provides a set of operations that need to be
- * implemented by each driver. These are used to implement the public API. If
- * support for system calls is needed, the operations structure must be tagged
- * with `__subsystem` and follow the `${class}_driver_api` naming scheme.
+ *  @param dev device struct
+ *  @param chan channel
+ *  @return int returns 0 if succeeful otherwise Error code
  */
 static int water_sample_fetch(const struct device *dev,
 							  enum sensor_channel chan)
@@ -117,7 +125,15 @@ static int water_sample_fetch(const struct device *dev,
 	return update_value(dev, chan);
 }
 
-// copy stored value to the pointer -- return value to app
+/** @brief water_sample get function to store the values from sensor to struct from user
+ *
+ *  This function will fetch values from the stored stuct memory and copy it to the user passed stuct
+ *
+ *  @param dev device
+ *  @param chan channel
+ *  @param val struct sensor_value type struct to retrieve sensor value
+ *  @return int returns 0 if succeeful otherwise Error code
+ */
 static int water_channel_get(const struct device *dev,
 							 enum sensor_channel chan,
 							 struct sensor_value *val)
@@ -140,6 +156,13 @@ static const struct sensor_driver_api water_api = {
 	.channel_get = &water_channel_get,
 };
 
+/** @brief water_init function checks for uart device and copies all configuration
+ *
+ *  This function takes a struct with all configuration and initilises the driver and sensor with it.
+ *
+ *  @param dev device
+ *  @return int returns 0 if succeeful otherwise Error code
+ */
 static int water_init(const struct device *dev)
 {
 	const struct water_config *config = dev->config;

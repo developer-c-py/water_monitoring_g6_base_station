@@ -11,10 +11,13 @@
 /** @brief water_sensor custom channels. */
 enum water_channel
 {
-  /** Fingerprint verification. */
+  /** PH channel. */
   WATER_CHAN_PH = SENSOR_CHAN_PRIV_START,
+  /** Turbidity Channel. */
   WATER_CHAN_TURB,
+  /** Temperature channel. */
   WATER_CHAN_TEMP,
+  /** All channels. */
   WATER_CHAN_ALL
 
 };
