@@ -87,7 +87,8 @@ static const struct uart_config uart_config = {
  *  format : [ 8bit  | 16bit 16bit | 16bit 16bit | 16bit 16bit | 8bit CRC]
  *
  *  @param dev device struct
- *  @return chan channel to update
+ *  @param chan channel to update
+ *  @return int 0 if success
  */
 int update_value(const struct device *dev,
 				 enum sensor_channel chan)
