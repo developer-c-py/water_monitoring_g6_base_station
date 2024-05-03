@@ -8,6 +8,16 @@
 
 #include <zephyr/drivers/sensor.h>
 
+/**
+ * @defgroup drivers Drivers
+ * @{
+ *
+ * @brief This is a group of all driver-related code.
+ *
+ * This group contains all the driver classes, functions, and variables.
+ * It's a central place to find everything related to drivers in this project.
+ */
+
 /** @brief water_sensor custom channels. */
 enum water_channel
 {
@@ -21,5 +31,5 @@ enum water_channel
   WATER_CHAN_ALL
 
 };
-
+/** @} */
 #endif /* ZEPHYR_INCLUDE */
