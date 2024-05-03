@@ -98,7 +98,7 @@ typedef struct water_config water_config_t;
  * \endcode
  */
 
-static const struct uart_config uart_config = {
+static const struct uart_config uart_config = (static const struct uart_config){
 	/** baudrate */
 	.baudrate = 115200U,
 	/** 8 bit*/
