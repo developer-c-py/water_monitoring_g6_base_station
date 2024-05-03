@@ -82,9 +82,13 @@ static const struct uart_config uart_config = {
 	.stop_bits = UART_CFG_STOP_BITS_2,
 };
 /**
- * @defgroup drivers_water Blink drivers
+ * @defgroup drivers_water Water drivers
  * @ingroup drivers
  * @{
+ *
+ * @brief A custom driver for Water monitoring sensor
+ *
+ *
  *
  */
 
@@ -184,7 +188,7 @@ static int water_init(const struct device *dev)
 
 	return 0;
 }
-/// @} // end of drivers_water
+/** @} */
 #define WATER_INIT(i)                                     \
 	static struct water_data water_data_##i;              \
                                                           \
