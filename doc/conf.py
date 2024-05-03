@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Example Application'
+project = 'Water Quality Monitoring Project'
 copyright = '2024, The Zephyr Community'
 author = 'The Zephyr Community'
 release = '1.0.0'
@@ -22,7 +22,7 @@ exclude_patterns = ['_build_sphinx', 'Thumbs.db', '.DS_Store']
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # -- Options for Intersphinx -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html
