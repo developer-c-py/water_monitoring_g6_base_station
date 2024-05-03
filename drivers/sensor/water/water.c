@@ -86,10 +86,15 @@ typedef struct water_config water_config_t;
 
 /** @brief sensor UART configuration. */
 static const struct uart_config uart_config = {
+	/** baudrate */
 	.baudrate = 115200U,
+	/** 8 bit*/
 	.data_bits = UART_CFG_DATA_BITS_8,
+	/** flow control */
 	.flow_ctrl = UART_CFG_FLOW_CTRL_NONE,
+	/** parity */
 	.parity = UART_CFG_PARITY_NONE,
+	/** stop bit */
 	.stop_bits = UART_CFG_STOP_BITS_2,
 };
 /**
