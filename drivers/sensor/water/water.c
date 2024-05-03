@@ -123,7 +123,7 @@ static const struct uart_config uart_config = {
 /**
  * @brief helper funtion to update values in the struct
  *
- *  format : [ 8bit  | 16bit 16bit | 16bit 16bit | 16bit 16bit | 8bit CRC]
+ *  format : [ (length) 8bit | (sensor cmd) 8bit | 8bit 8bit 8bit 8bit 8bit 8bit ]
  *
  *  @param dev device struct
  *  @param chan channel to update
