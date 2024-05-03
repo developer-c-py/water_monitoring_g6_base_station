@@ -192,9 +192,8 @@ static int water_channel_get(const struct device *dev,
 }
 
 static const struct sensor_driver_api water_api = {
-	.sample_fetch = &water_sample_fetch,
-	.channel_get = &water_channel_get,
-};
+	&water_sample_fetch,
+	&water_channel_get};
 
 /** @brief water_init function checks for uart device and copies all configuration
  *
