@@ -7,9 +7,8 @@ This is a simple Sphinx documentation setup for ``example-application``.
    :maxdepth: 2
    :caption: Contents
 
+   drivers/index
    zephyr
-   ../drivers/sensor/water
-   ../include/app/drivers/sensor
    
 Indices and tables
 ==================

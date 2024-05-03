@@ -81,8 +81,15 @@ static const struct uart_config uart_config = {
 	.parity = UART_CFG_PARITY_NONE,
 	.stop_bits = UART_CFG_STOP_BITS_2,
 };
+/**
+ * @defgroup drivers_water Blink drivers
+ * @ingroup drivers
+ * @{
+ *
+ */
 
-/** @brief helper funtion to update values in the struct
+/**
+ * @brief helper funtion to update values in the struct
  *
  *  format : [ 8bit  | 16bit 16bit | 16bit 16bit | 16bit 16bit | 8bit CRC]
  *
@@ -177,7 +184,7 @@ static int water_init(const struct device *dev)
 
 	return 0;
 }
-
+/// @} // end of drivers_water
 #define WATER_INIT(i)                                     \
 	static struct water_data water_data_##i;              \
                                                           \
