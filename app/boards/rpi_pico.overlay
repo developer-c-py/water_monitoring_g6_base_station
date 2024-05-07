@@ -4,7 +4,7 @@ aliases{
 };
 };
 
-&uart0 {
+&uart1 {
 	status = "okay";
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -14,7 +14,7 @@ aliases{
 };
 };
 
-&uart1 {
+&uart0 {
     status = "okay";
     current-speed = <115200>;
 };
