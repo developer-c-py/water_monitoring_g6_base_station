@@ -14,10 +14,10 @@
 #define RX_QUEUE_SIZE     	2U
 #define CMD_SIZE			1U
 //commands
-#define TURB = 0x00U
-#define PH = 0x01U
-#define TEMP = 0x02U
-#define ALL = 0x03U
+#define TURB  0x00U
+#define PH  0x01U
+#define TEMP  0x02U
+#define ALL  0x03U
 
 
 #define TURBIDITY_POS_INT 	0U//
@@ -33,20 +33,20 @@
 #define PKT_CMD_POS			0U
 #define PKT_SAM_TIME_POS	8U
 //------------
-#if defined WATER_OVER_1X
+#if defined CONFIG_WATER_OVER_1X
 #define SAMPLINT_TIME            1U
-#elif defined WATER_OVER_2X
+#elif defined CONFIG_WATER_OVER_2X
 #define SAMPLINT_TIME            2U
-#elif defined WATER_OVER_4X
+#elif defined CONFIG_WATER_OVER_4X
 #define SAMPLINT_TIME            3U
-#elif defined WATER_OVER_8X
+#elif defined CONFIG_WATER_OVER_8X
 #define SAMPLINT_TIME            4U
-#elif defined WATER_OVER_16X
+#elif defined CONFIG_WATER_OVER_16X
 #define SAMPLINT_TIME            5U
 #endif
-#if defined WATER_RES_1X
+#if defined CONFIG_WATER_RES_1X
 #define RESOLUTION            10U
-#elif defined WATER_RES_2X
+#elif defined CONFIG_WATER_RES_2X
 #define RESOLUTION            12U
 #endif
 //-----------
@@ -63,12 +63,12 @@ enum water_channel
 /** @} */
 #endif /* ZEPHYR_INCLUDE */
 //typedef struct sensor_value sensor_value_t;
-struct sensor_value_t {
+typedef struct  {
 	/** Integer part of the value. */
 	int16_t val1;
 	/** Fractional part of the value (in one-millionth parts). */
 	int16_t val2;
-};
+} sensor_value_t;
 struct water_data
 {
 	/** RX queue buffer. */

@@ -44,7 +44,7 @@ static void uart_cb_rx_handler(const struct device *dev)
 	data->buf_ctr += (uint8_t)n;
 	data->buf_ptr += (uint8_t)n;
 
-	if (data->buf_ctr >= PKT_LEN(data->rx_data_len)) {
+	if (data->buf_ctr >= data->rx_data_len) {
 		LOG_HEXDUMP_DBG(data->buf, data->buf_ctr, "RX");
 		if (k_msgq_put(&data->rx_queue, data->buf, K_NO_WAIT) < 0) {
 			LOG_ERR("RX queue full, dropping packet");
@@ -118,7 +118,7 @@ static int water_send(const struct device *dev, uint8_t cmd,
 	const struct water_config *config = dev->config;
 	struct water_data *data = dev->data;
 
-	if (PKT_LEN(rx_data_len) > sizeof(data->buf)) {
+	if (rx_data_len > sizeof(data->buf)) {
 		return -EMSGSIZE;
 	}
 
@@ -210,11 +210,11 @@ int update_value(const struct device *dev,
 		water_recv(dev, rx_data_len);
 	case WATER_CHAN_TURB:
 		rx_data_len = 32;
-		water_send(dev, TURB,rx_data_len)
+		water_send(dev, TURB,rx_data_len);
 		water_recv(dev, rx_data_len);
 	case WATER_CHAN_ALL:
 		rx_data_len = 96;
-		water_send(dev, ALL,rx_data_len)
+		water_send(dev, ALL,rx_data_len);
 		water_recv(dev, rx_data_len);
 	default:
 		return -ENOTSUP;

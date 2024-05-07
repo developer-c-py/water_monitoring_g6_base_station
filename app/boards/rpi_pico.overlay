@@ -6,6 +6,7 @@ aliases{
 
 &uart1 {
 	status = "okay";
+	current-speed = <115200>;
 	#address-cells = <1>;
 	#size-cells = <0>;
 		watersensor: water {
