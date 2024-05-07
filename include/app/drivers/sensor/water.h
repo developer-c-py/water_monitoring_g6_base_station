@@ -51,13 +51,14 @@
 #endif
 //-----------
 /** @brief water_sensor custom channels. */
+
 enum water_channel
 {
-  /** water channel verification. */
-  WATER_CHAN_PH = 0,
-  WATER_CHAN_TURB = 1,
-  WATER_CHAN_TEMP = 2,
-  WATER_CHAN_ALL = 3
+  /** Fingerprint verification. */
+  WATER_CHAN_PH = SENSOR_CHAN_PRIV_START,
+  WATER_CHAN_TURB,
+  WATER_CHAN_TEMP,
+  WATER_CHAN_ALL
 
 };
 /** @} */
