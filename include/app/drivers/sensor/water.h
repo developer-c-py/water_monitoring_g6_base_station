@@ -113,9 +113,18 @@ struct water_config
 typedef struct water_data water_data_t;
 typedef struct water_config water_config_t;
 
-/*
- * sensor UART configuration.
+/**
+ * @brief sensor UART configuration.
  *
+ * \code{.cpp}
+ * static const struct uart_config uart_config = {
+ *     .baudrate = 115200U,
+ *     .data_bits = UART_CFG_DATA_BITS_8,
+ *     .flow_ctrl = UART_CFG_FLOW_CTRL_NONE,
+ *     .parity = UART_CFG_PARITY_NONE,
+ *     .stop_bits = UART_CFG_STOP_BITS_2,
+ * };
+ * \endcode
  */
 static const struct uart_config uart_config = {
 	.baudrate = 115200U,
