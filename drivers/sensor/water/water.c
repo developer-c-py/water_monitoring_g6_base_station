@@ -119,13 +119,10 @@ static void uart_cb_handler(const struct device *dev, void *user_data)
  *
  * @param dev Sensor instance.
  * @param cmd Command to send.
- * @param sam_time command to send.
- * @param[in] tx_data Data to send.
- * @param tx_data_len Data length.
  * @param rx_data_len Expected data reception length.
  *
- * @retval 0 Success.
- * @retval -EMSGSIZE If TX/RX data length is too large.
+ * @retval 0 Success , -EMSGSIZE If TX/RX data length is too large.
+ *
  */
 static int water_send(const struct device *dev, uint8_t cmd,
 					  uint8_t rx_data_len) //,uint8_t sam_time
@@ -158,13 +155,10 @@ static int water_send(const struct device *dev, uint8_t cmd,
  * Receive response from the sensor.
  *
  * @param dev Sensor instance.
- * @param[out] result Pointer where to store the result.
- * @param[out] buf Buffer to store the response.
- * @param buf_len Buffer length.
+ * @param rx_data_len rx data length
  *
- * @retval 0 Success.
- * @retval -EMSGSIZE If RX data length does not match current settings.
- * @retval -EAGAIN If reception times out.
+ * @retval 0 Success, -EMSGSIZE If RX data length does not match current settings, -EAGAIN If reception times out.
+ *
  */
 static int water_recv(const struct device *dev, uint8_t rx_data_len)
 {

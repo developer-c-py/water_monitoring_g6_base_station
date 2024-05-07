@@ -21,13 +21,14 @@
 #define PKT_BUF_SIZE 12U // THIS BUFFER SIZE SHOULD BE VARIABLE BASED ON THE CMD 50
 #define RX_QUEUE_SIZE 2U
 #define CMD_SIZE 1U
+
 // commands
 #define TURB 0x00U
 #define PH 0x01U
 #define TEMP 0x02U
 #define ALL 0x03U
 
-#define TURBIDITY_POS_INT 0U //
+#define TURBIDITY_POS_INT 0U
 #define TURBIDITY_POS_DEC 2U
 #define PH_POS_INT 4U
 #define PH_POS_DEC 6U
@@ -112,7 +113,10 @@ struct water_config
 typedef struct water_data water_data_t;
 typedef struct water_config water_config_t;
 
-/** @brief sensor UART configuration. */
+/*
+ * sensor UART configuration.
+ *
+ */
 static const struct uart_config uart_config = {
 	.baudrate = 115200U,
 	.data_bits = UART_CFG_DATA_BITS_8,
