@@ -58,7 +58,7 @@ enum water_channel
   WATER_CHAN_ALL = 3
 
 };
-
+/** @} */
 #endif /* ZEPHYR_INCLUDE */
 //typedef struct sensor_value sensor_value_t;
 struct sensor_value_t {

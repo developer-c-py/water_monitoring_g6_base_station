@@ -1,14 +1,15 @@
-Welcome to Example Application's documentation!
-===============================================
+Welcome to Water monitoring base sensor documentation!
+======================================================
 
-This is a simple Sphinx documentation setup for ``example-application``.
+This documentation provides the functions,types,etc required to use the driver.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents
 
+   drivers/index
    zephyr
-
+   
 Indices and tables
 ==================
 

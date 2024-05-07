@@ -1,4 +1,5 @@
-# initialize workspace for the zds-2022-drivers-app (main branch)
+docs hosted at :  [doxygen documented link](https://amrith-h-n.github.io/water_monitoring_g6_base_station/)
+# initialize workspace for the water monitoring base station (main branch)
 
 ```
 west init -m https://github.com/Amrith-H-N/water_monitoring_g6_base_station --mr main water_monitoring_g6_base_station
