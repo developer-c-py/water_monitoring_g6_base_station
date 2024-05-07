@@ -8,68 +8,79 @@
 
 #include <zephyr/drivers/sensor.h>
 
+/**
+ * @defgroup drivers Drivers
+ * @{
+ *
+ * @brief This is a group of all driver-related code.
+ *
+ * This group contains all the driver classes, functions, and variables.
+ * It's a central place to find everything related to drivers in this project.
+ */
 
+#define PKT_BUF_SIZE 12U // THIS BUFFER SIZE SHOULD BE VARIABLE BASED ON THE CMD 50
+#define RX_QUEUE_SIZE 2U
+#define CMD_SIZE 1U
+// commands
+#define TURB 0x00U
+#define PH 0x01U
+#define TEMP 0x02U
+#define ALL 0x03U
 
-#define PKT_BUF_SIZE     	12U // THIS BUFFER SIZE SHOULD BE VARIABLE BASED ON THE CMD 50
-#define RX_QUEUE_SIZE     	2U
-#define CMD_SIZE			1U
-//commands
-#define TURB  0x00U
-#define PH  0x01U
-#define TEMP  0x02U
-#define ALL  0x03U
+#define TURBIDITY_POS_INT 0U //
+#define TURBIDITY_POS_DEC 2U
+#define PH_POS_INT 4U
+#define PH_POS_DEC 6U
+#define TEMP_POS_INT 8U
+#define TEMP_POS_DEC 10U
+#define SINGLE_POS_INT 0U
+#define SINGLE_POS_DEC 2U
+// #define PKT_HEADER_POS    0U
 
-
-#define TURBIDITY_POS_INT 	0U//
-#define TURBIDITY_POS_DEC 	2U
-#define PH_POS_INT        	4U
-#define PH_POS_DEC        	6U
-#define TEMP_POS_INT      	8U
-#define TEMP_POS_DEC      	10U
-#define SINGLE_POS_INT		0U
-#define SINGLE_POS_DEC		2U
-//#define PKT_HEADER_POS    0U
-
-#define PKT_CMD_POS			0U
-#define PKT_SAM_TIME_POS	8U
+#define PKT_CMD_POS 0U
+#define PKT_SAM_TIME_POS 8U
 //------------
 #if defined CONFIG_WATER_OVER_1X
-#define SAMPLINT_TIME            1U
+#define SAMPLINT_TIME 1U
 #elif defined CONFIG_WATER_OVER_2X
-#define SAMPLINT_TIME            2U
+#define SAMPLINT_TIME 2U
 #elif defined CONFIG_WATER_OVER_4X
-#define SAMPLINT_TIME            3U
+#define SAMPLINT_TIME 3U
 #elif defined CONFIG_WATER_OVER_8X
-#define SAMPLINT_TIME            4U
+#define SAMPLINT_TIME 4U
 #elif defined CONFIG_WATER_OVER_16X
-#define SAMPLINT_TIME            5U
+#define SAMPLINT_TIME 5U
 #endif
 #if defined CONFIG_WATER_RES_1X
-#define RESOLUTION            10U
+#define RESOLUTION 10U
 #elif defined CONFIG_WATER_RES_2X
-#define RESOLUTION            12U
+#define RESOLUTION 12U
 #endif
-//-----------
-/** @brief water_sensor custom channels. */
 
+/** @brief water_sensor custom channels. */
 enum water_channel
 {
-  /** Fingerprint verification. */
-  WATER_CHAN_PH = SENSOR_CHAN_PRIV_START,
-  WATER_CHAN_TURB,
-  WATER_CHAN_TEMP,
-  WATER_CHAN_ALL
+	/** water channel verification. */
+	WATER_CHAN_PH = SENSOR_CHAN_PRIV_START,
+	WATER_CHAN_TURB,
+	WATER_CHAN_TEMP,
+	WATER_CHAN_ALL
 
 };
-/** @} */
-#endif /* ZEPHYR_INCLUDE */
-//typedef struct sensor_value sensor_value_t;
-typedef struct  {
+/*
+ * sensor data structure
+ */
+typedef struct
+{
 	/** Integer part of the value. */
 	int16_t val1;
 	/** Fractional part of the value (in one-millionth parts). */
 	int16_t val2;
 } sensor_value_t;
+
+/*
+ * water data structure
+ */
 struct water_data
 {
 	/** RX queue buffer. */
@@ -89,7 +100,9 @@ struct water_data
 	/** RX queue. */
 	struct k_msgq rx_queue;
 };
-
+/*
+ * water config structure
+ */
 struct water_config
 {
 	uint32_t addr;
@@ -107,3 +120,5 @@ static const struct uart_config uart_config = {
 	.parity = UART_CFG_PARITY_NONE,
 	.stop_bits = UART_CFG_STOP_BITS_2,
 };
+/** @} */
+#endif /* ZEPHYR_INCLUDE */

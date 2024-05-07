@@ -23,8 +23,16 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/sys/ring_buffer.h>
 #include "app/drivers/sensor/water.h"
-/* packet buffer size, RX queue size */
 
+/**
+ * @defgroup drivers Drivers
+ * @{
+ *
+ * @brief This is a group of all driver-related code.
+ *
+ * This group contains all the driver classes, functions, and variables.
+ * It's a central place to find everything related to drivers in this project.
+ */
 
 LOG_MODULE_REGISTER(water, CONFIG_SENSOR_LOG_LEVEL);
 
@@ -40,13 +48,15 @@ static void uart_cb_rx_handler(const struct device *dev)
 	int n;
 
 	n = uart_fifo_read(config->uart, data->buf_ptr,
-			   PKT_BUF_SIZE - data->buf_ctr);
+					   PKT_BUF_SIZE - data->buf_ctr);
 	data->buf_ctr += (uint8_t)n;
 	data->buf_ptr += (uint8_t)n;
 
-	if (data->buf_ctr >= data->rx_data_len) {
+	if (data->buf_ctr >= data->rx_data_len)
+	{
 		LOG_HEXDUMP_DBG(data->buf, data->buf_ctr, "RX");
-		if (k_msgq_put(&data->rx_queue, data->buf, K_NO_WAIT) < 0) {
+		if (k_msgq_put(&data->rx_queue, data->buf, K_NO_WAIT) < 0)
+		{
 			LOG_ERR("RX queue full, dropping packet");
 		}
 		data->buf_ctr = 0U;
@@ -65,14 +75,16 @@ static void uart_cb_tx_handler(const struct device *dev)
 	struct water_data *data = dev->data;
 	int n;
 
-	if (data->buf_ctr > 0U) {
+	if (data->buf_ctr > 0U)
+	{
 		n = uart_fifo_fill(config->uart, data->buf_ptr, data->buf_ctr);
 		data->buf_ctr -= (uint8_t)n;
 		data->buf_ptr += (uint8_t)n;
 		return;
 	}
 
-	if (uart_irq_tx_complete(config->uart) > 0) {
+	if (uart_irq_tx_complete(config->uart) > 0)
+	{
 		data->buf_ptr = data->buf;
 		uart_irq_tx_disable(config->uart);
 		uart_irq_rx_enable(config->uart);
@@ -89,12 +101,15 @@ static void uart_cb_handler(const struct device *dev, void *user_data)
 {
 	const struct device *sensor = user_data;
 
-	if ((uart_irq_update(dev) > 0) && (uart_irq_is_pending(dev) > 0)) {
-		if (uart_irq_rx_ready(dev)) {
+	if ((uart_irq_update(dev) > 0) && (uart_irq_is_pending(dev) > 0))
+	{
+		if (uart_irq_rx_ready(dev))
+		{
 			uart_cb_rx_handler(sensor);
 		}
 
-		if (uart_irq_tx_ready(dev)) {
+		if (uart_irq_tx_ready(dev))
+		{
 			uart_cb_tx_handler(sensor);
 		}
 	}
@@ -113,17 +128,18 @@ static void uart_cb_handler(const struct device *dev, void *user_data)
  * @retval -EMSGSIZE If TX/RX data length is too large.
  */
 static int water_send(const struct device *dev, uint8_t cmd,
-		      uint8_t rx_data_len) //,uint8_t sam_time
+					  uint8_t rx_data_len) //,uint8_t sam_time
 {
 	const struct water_config *config = dev->config;
 	struct water_data *data = dev->data;
 
-	if (rx_data_len > sizeof(data->buf)) {
+	if (rx_data_len > sizeof(data->buf))
+	{
 		return -EMSGSIZE;
 	}
 
 	data->buf[PKT_CMD_POS] = cmd;
-	//data->buf[PKT_SAM_TIME_POS] = sam_time;
+	// data->buf[PKT_SAM_TIME_POS] = sam_time;
 
 	/* store expected reception data length */
 	data->rx_data_len = rx_data_len;
@@ -156,12 +172,14 @@ static int water_recv(const struct device *dev, uint8_t rx_data_len)
 	uint8_t buf[PKT_BUF_SIZE];
 	int ret;
 
-	if (rx_data_len != data->rx_data_len) {
+	if (rx_data_len != data->rx_data_len)
+	{
 		return -EMSGSIZE;
 	}
 
 	ret = k_msgq_get(&data->rx_queue, buf, K_FOREVER);
-	if (ret < 0) {
+	if (ret < 0)
+	{
 		return ret;
 	}
 
@@ -201,20 +219,20 @@ int update_value(const struct device *dev,
 	{
 	case WATER_CHAN_PH:
 		rx_data_len = 32;
-		water_send(dev, PH,rx_data_len);
+		water_send(dev, PH, rx_data_len);
 		water_recv(dev, rx_data_len);
 		break;
 	case WATER_CHAN_TEMP:
 		rx_data_len = 32;
-		water_send(dev, TEMP,rx_data_len);
+		water_send(dev, TEMP, rx_data_len);
 		water_recv(dev, rx_data_len);
 	case WATER_CHAN_TURB:
 		rx_data_len = 32;
-		water_send(dev, TURB,rx_data_len);
+		water_send(dev, TURB, rx_data_len);
 		water_recv(dev, rx_data_len);
 	case WATER_CHAN_ALL:
 		rx_data_len = 96;
-		water_send(dev, ALL,rx_data_len);
+		water_send(dev, ALL, rx_data_len);
 		water_recv(dev, rx_data_len);
 	default:
 		return -ENOTSUP;
@@ -255,7 +273,7 @@ static int water_channel_get(const struct device *dev,
 							 struct sensor_value *val)
 {
 	water_data_t *data = dev->data;
-		switch (chan)
+	switch (chan)
 	{
 	case WATER_CHAN_PH:
 		data->pH.val1 = data->rx_queue_buf[SINGLE_POS_INT]; // write code to get data from rxbuffer and update
@@ -277,7 +295,7 @@ static int water_channel_get(const struct device *dev,
 		data->temp.val1 = data->rx_queue_buf[TEMP_POS_INT];
 		data->temp.val2 = data->rx_queue_buf[TEMP_POS_DEC];
 		break;
-	
+
 	default:
 		return -ENOTSUP;
 	}
@@ -307,15 +325,16 @@ static int water_init(const struct device *dev)
 		return ENXIO;
 	}
 	ret = uart_configure(config->uart, &uart_config);
-	if (ret < 0) {
+	if (ret < 0)
+	{
 		return ret;
 	}
 
 	uart_irq_callback_user_data_set(config->uart, uart_cb_handler,
-					(void *)dev);
+									(void *)dev);
 
 	k_msgq_init(&data->rx_queue, data->rx_queue_buf, PKT_BUF_SIZE,
-		    RX_QUEUE_SIZE);
+				RX_QUEUE_SIZE);
 	water_send(dev, RESOLUTION, 0);
 	water_send(dev, SAMPLINT_TIME, 0);
 
@@ -323,18 +342,18 @@ static int water_init(const struct device *dev)
 }
 /** @} */
 /** @} */
-#define WATER_INIT(i)                                     \
-	static struct water_data water_data_##i;              \
-                                                          \
-	static const struct water_config water_config_##i = { \
-		/*.input = GPIO_DT_SPEC_INST_GET(i, input_gpios), */	\
-		.uart = DEVICE_DT_GET(DT_NODELABEL(uart1)),			\
-   		.addr = DT_INST_REG_ADDR(i),						   \
-	};                                                    \
-                                                          \
-	DEVICE_DT_INST_DEFINE(i, water_init, NULL,            \
-						  &water_data_##i,                \
-						  &water_config_##i, POST_KERNEL, \
+#define WATER_INIT(i)                                        \
+	static struct water_data water_data_##i;                 \
+                                                             \
+	static const struct water_config water_config_##i = {    \
+		/*.input = GPIO_DT_SPEC_INST_GET(i, input_gpios), */ \
+		.uart = DEVICE_DT_GET(DT_NODELABEL(uart1)),          \
+		.addr = DT_INST_REG_ADDR(i),                         \
+	};                                                       \
+                                                             \
+	DEVICE_DT_INST_DEFINE(i, water_init, NULL,               \
+						  &water_data_##i,                   \
+						  &water_config_##i, POST_KERNEL,    \
 						  CONFIG_SENSOR_INIT_PRIORITY, &water_api);
 
 DT_INST_FOREACH_STATUS_OKAY(WATER_INIT)
