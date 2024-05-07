@@ -39,8 +39,10 @@
 #define SAMPLINT_TIME            2U
 #elif defined WATER_OVER_4X
 #define SAMPLINT_TIME            3U
-#elif defined WATER_OVER_16X
+#elif defined WATER_OVER_8X
 #define SAMPLINT_TIME            4U
+#elif defined WATER_OVER_16X
+#define SAMPLINT_TIME            5U
 #endif
 #if defined WATER_RES_1X
 #define RESOLUTION            10U
